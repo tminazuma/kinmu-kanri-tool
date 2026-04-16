@@ -1,0 +1,13 @@
+# OS
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# Editor
+.vscode/
+.cursor/
+*.swp
+*.swo
+
+# 一時ファイル（Excelの編集ロック）
+~$*
