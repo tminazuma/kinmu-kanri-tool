@@ -290,37 +290,6 @@ function closeModal() {
 document.addEventListener('keydown', e => { if (e.key === 'Escape') closeModal(); });
 
 // ─────────────────────────────────────────────────────────────────────────────
-// 振り分け結果 Excel エクスポート
-// ─────────────────────────────────────────────────────────────────────────────
-
-function exportSortResult() {
-  const all = Object.values(app.items);
-  if (all.length === 0) { alert('エクスポートするデータがありません。'); return; }
-
-  const groups = {
-    h7:        all.filter(i => i.type === '7'),
-    h8:        all.filter(i => i.type === '8'),
-    exc:       all.filter(i => i.type === 'exc'),
-    unmatched: all.filter(i => i.type === 'unmatched'),
-  };
-
-  const wb   = XLSX.utils.book_new();
-  const rows = arr => [
-    ['ファイル名', '照合名'],
-    ...arr.map(i => [i.file.name, i.matched || i.extracted || ''])
-  ];
-
-  XLSX.utils.book_append_sheet(wb, XLSX.utils.aoa_to_sheet(rows(groups.h7)),        '7時間勤務者');
-  XLSX.utils.book_append_sheet(wb, XLSX.utils.aoa_to_sheet(rows(groups.h8)),        '8時間勤務者');
-  XLSX.utils.book_append_sheet(wb, XLSX.utils.aoa_to_sheet(rows(groups.exc)),       'Exception');
-  XLSX.utils.book_append_sheet(wb, XLSX.utils.aoa_to_sheet(rows(groups.unmatched)), '未振り分け');
-
-  const now   = new Date();
-  const stamp = `${now.getFullYear()}${String(now.getMonth() + 1).padStart(2, '0')}${String(now.getDate()).padStart(2, '0')}`;
-  XLSX.writeFile(wb, `振り分け結果_${stamp}.xlsx`);
-}
-
-// ─────────────────────────────────────────────────────────────────────────────
 // 一括印刷（ID順）
 // ─────────────────────────────────────────────────────────────────────────────
 
