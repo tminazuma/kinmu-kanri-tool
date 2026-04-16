@@ -95,8 +95,8 @@
       <span class="step-pill">STEP 2</span>
       <h2 class="text-base font-bold text-gray-800 mt-2 mb-4">勤務ファイルをドロップ</h2>
 
-      <!-- ── 自動モード（マスター読込済の場合に表示） ── -->
-      <div id="workModeAuto" class="hidden">
+      <!-- ── 自動モード（常に表示） ── -->
+      <div id="workModeAuto">
         <p class="text-xs text-green-600 font-medium mb-3 flex items-center gap-1">
           <span>✓</span> 参照リスト読み込み済み — ファイル名で自動振り分けします
         </p>
@@ -112,8 +112,8 @@
         </div>
       </div>
 
-      <!-- ── 手動モード（マスター未読込の場合に表示） ── -->
-      <div id="workModeManual">
+      <!-- ── 手動モード（非表示・自動読み込み失敗時のフォールバック） ── -->
+      <div id="workModeManual" class="hidden">
         <p class="text-xs text-amber-600 font-medium mb-3 flex items-center gap-1">
           <span>⚠️</span> 参照リスト未読込 — 計算基準ごとにドロップしてください
         </p>
