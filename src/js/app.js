@@ -168,6 +168,49 @@ function filterValid(files) {
 }
 
 // ─────────────────────────────────────────────────────────────────────────────
+// STEP 1: 名簿ファイル自動読み込み
+// ─────────────────────────────────────────────────────────────────────────────
+
+const MASTER_FILENAME = '勤務者名簿_振分用.xlsx';
+
+/**
+ * 同じディレクトリに置かれた名簿ファイルを fetch で自動読み込みする。
+ * 失敗した場合はドロップゾーンを手動モードのまま表示する。
+ */
+async function autoLoadMaster() {
+  const zone    = document.getElementById('masterZone');
+  const mainTxt = zone.querySelector('.dz-main');
+  const subTxt  = zone.querySelector('.dz-sub');
+
+  mainTxt.textContent = '読み込み中...';
+  subTxt.textContent  = MASTER_FILENAME;
+
+  try {
+    const res = await fetch(MASTER_FILENAME);
+    if (!res.ok) throw new Error(`HTTP ${res.status}`);
+
+    const buf    = await res.arrayBuffer();
+    const wb     = XLSX.read(new Uint8Array(buf), { type: 'array' });
+    const counts = loadMasterWorkbook(wb);
+
+    zone.classList.add('dz-loaded');
+    mainTxt.textContent = '✓ ' + MASTER_FILENAME;
+    subTxt.textContent  = '自動読み込み完了';
+
+    document.getElementById('masterInfo').classList.remove('hidden');
+    document.getElementById('count7hMaster').textContent  = counts.h7  + '名';
+    document.getElementById('count8hMaster').textContent  = counts.h8  + '名';
+    document.getElementById('countExcMaster').textContent = counts.exc + '名';
+
+    setWorkModeAuto();
+  } catch (e) {
+    console.warn('名簿ファイルの自動読み込みに失敗しました:', e.message);
+    mainTxt.textContent = 'クリックまたはドロップ';
+    subTxt.textContent  = '7時間・8時間の名前リスト Excel';
+  }
+}
+
+// ─────────────────────────────────────────────────────────────────────────────
 // 初期化
 // ─────────────────────────────────────────────────────────────────────────────
 
@@ -175,3 +218,5 @@ setupDropZone('masterZone',    'masterInput',    onMasterFiles);
 setupDropZone('workZoneAuto',  'workInputAuto',  onWorkFilesAuto);
 setupDropZone('workZone7',     'workInput7',     onWorkFiles7h);
 setupDropZone('workZone8',     'workInput8',     onWorkFiles8h);
+
+autoLoadMaster();
