@@ -325,14 +325,14 @@ function openAllInBrowser() {
   .print-btn { padding: 10px 24px; font-size: 15px; cursor: pointer;
                background: #6366f1; color: #fff; border: none; border-radius: 8px; }
   @media print {
-    @page { size: A4 landscape; margin: 5mm; }
+    @page { size: A4 landscape; margin: 3mm; }
     body { padding: 0; -webkit-print-color-adjust: exact; print-color-adjust: exact; }
     .no-print { display: none; }
     .page-break { border: none; height: 0; margin: 0; page-break-after: always;
                   break-after: page; display: block !important; }
-    h1 { font-size: 12px; }
-    table { font-size: 9px; }
-    th, td { padding: 2px 4px; }
+    h1 { font-size: 10px; margin: 0 0 3px; }
+    table { font-size: 8px; }
+    th, td { padding: 1px 3px; }
     th { background: #f3f4f6 !important; }
     .footer-row { background: #e0e7ff !important; }
     .b7h  { background: #dbeafe !important; color: #1d4ed8 !important; }
