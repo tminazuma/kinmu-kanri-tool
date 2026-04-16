@@ -35,8 +35,8 @@ const app = {
 // 設定値ヘルパー
 // ─────────────────────────────────────────────────────────────────────────────
 
-function getRoundMode()  { return document.querySelector('input[name="roundMode"]:checked').value; }
-function getTimeFormat() { return document.querySelector('input[name="timeFormat"]:checked').value; }
+function getRoundMode()  { return 'ceil'; }
+function getTimeFormat() { return 'decimal'; }
 
 // ─────────────────────────────────────────────────────────────────────────────
 // STEP 1: マスターファイル読み込み
