@@ -312,8 +312,9 @@ function openAllInBrowser() {
   h1 { font-size: 15px; margin: 0 0 8px; border-bottom: 2px solid #6366f1; padding-bottom: 4px;
        display: flex; align-items: center; gap: 8px; }
   .badge { font-size: 11px; font-weight: 700; padding: 2px 8px; border-radius: 9999px; }
-  .b7h { background: #dbeafe; color: #1d4ed8; }
-  .b8h { background: #f3e8ff; color: #7e22ce; }
+  .b7h  { background: #dbeafe; color: #1d4ed8; }
+  .b8h  { background: #f3e8ff; color: #7e22ce; }
+  .bexc { background: #fef9c3; color: #854d0e; }
   table { width: 100%; border-collapse: collapse; font-size: 12px; margin-bottom: 14px; }
   th, td { border: 1px solid #ccc; padding: 5px 7px; text-align: left; white-space: nowrap; }
   th { background: #f3f4f6; font-weight: bold; }
@@ -334,15 +335,17 @@ function openAllInBrowser() {
     th, td { padding: 2px 4px; }
     th { background: #f3f4f6 !important; }
     .footer-row { background: #e0e7ff !important; }
-    .b7h { background: #dbeafe !important; color: #1d4ed8 !important; }
-    .b8h { background: #f3e8ff !important; color: #7e22ce !important; }
+    .b7h  { background: #dbeafe !important; color: #1d4ed8 !important; }
+    .b8h  { background: #f3e8ff !important; color: #7e22ce !important; }
+    .bexc { background: #fef9c3 !important; color: #854d0e !important; }
   }
 </style></head><body>
 <div class="no-print">
   <p style="font-size:13px;color:#6b7280;margin-bottom:10px;">
     印刷順：<strong>ID順</strong>　全 <strong>${sorted.length}</strong> 件
     （7h基準: ${sorted.filter(([, f]) => f.overtimeRule === '7').length}件 ／
-     8h基準: ${sorted.filter(([, f]) => f.overtimeRule === '8').length}件）
+     8h基準: ${sorted.filter(([, f]) => f.overtimeRule === '8').length}件 ／
+     Exception: ${sorted.filter(([, f]) => f.overtimeRule === 'exc').length}件）
   </p>
   <button class="print-btn" onclick="window.print()">🖨️ 印刷する</button>
 </div>`;
@@ -350,8 +353,8 @@ function openAllInBrowser() {
   sorted.forEach(([, fd], idx) => {
     const fid        = extractId(fd.originalName);
     const idLabel    = fid !== Infinity ? ` [ID: ${fid}]` : '';
-    const badgeClass = fd.overtimeRule === '7' ? 'b7h' : 'b8h';
-    const ruleLabel  = fd.overtimeRule === '7' ? '7時間基準' : '8時間基準';
+    const badgeClass = fd.overtimeRule === '7' ? 'b7h' : fd.overtimeRule === '8' ? 'b8h' : 'bexc';
+    const ruleLabel  = fd.overtimeRule === '7' ? '7時間基準' : fd.overtimeRule === '8' ? '8時間基準' : 'Exception';
 
     html += `<div>`;
     html += `<h1><span class="badge ${badgeClass}">${ruleLabel}</span>${escHtml(fd.originalName)}${idLabel}</h1>`;

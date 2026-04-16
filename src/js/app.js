@@ -96,8 +96,11 @@ async function onWorkFilesAuto(files) {
     addFileItem(listId, fileId, file.name, cls.matched, cls.type);
     updateCountBadges();
 
-    // Exception は残業計算しない
-    if (cls.type === 'exc') continue;
+    // Exception は残業計算しないが、印刷のためにデータを読み込む
+    if (cls.type === 'exc') {
+      await runExc(file, fileId);
+      continue;
+    }
 
     await runCalc(file, fileId, cls.type);
   }
@@ -122,6 +125,32 @@ async function onWorkFilesManual(files, overtimeRule, listId) {
     addFileItem(listId, fileId, file.name, null, overtimeRule);
     updateCountBadges();
     await runCalc(file, fileId, overtimeRule);
+  }
+}
+
+// ─────────────────────────────────────────────────────────────────────────────
+// Exception ファイルの読み込み（残業計算なし・印刷用データのみ保存）
+// ─────────────────────────────────────────────────────────────────────────────
+
+async function runExc(file, fileId) {
+  try {
+    const buf    = await file.arrayBuffer();
+    const wb     = XLSX.read(buf, { type: 'array', cellDates: true });
+    const shName = wb.SheetNames[0];
+    const data   = XLSX.utils.sheet_to_json(wb.Sheets[shName], { header: 1, defval: '' });
+
+    app.processedData[fileId] = {
+      data,
+      headerIndex:  0,
+      excelBlob:    new Blob([buf], {
+        type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'
+      }),
+      originalName: file.name,
+      overtimeRule: 'exc',
+      processedAt:  formatDate(new Date())
+    };
+  } catch (e) {
+    console.error('Exception ファイルの読み込みに失敗しました:', e);
   }
 }
 
