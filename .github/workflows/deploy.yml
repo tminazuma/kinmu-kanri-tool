@@ -26,6 +26,8 @@ jobs:
 
       - name: GitHub Pages を設定
         uses: actions/configure-pages@v5
+        with:
+          enablement: true
 
       - name: src/ フォルダをアップロード
         uses: actions/upload-pages-artifact@v3
