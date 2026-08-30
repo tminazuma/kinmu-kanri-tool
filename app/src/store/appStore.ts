@@ -20,7 +20,7 @@ export interface WorkItem {
 
 interface MasterState {
   maps:   MasterMaps
-  counts: { h7: number; h8: number; exc: number }
+  counts: { h6: number; h8: number; exc: number }
   loaded: boolean
 }
 
@@ -46,8 +46,8 @@ interface AppState {
 }
 
 const emptyMaster: MasterState = {
-  maps:   { h7: new Map(), h8: new Map(), exc: new Map() },
-  counts: { h7: 0, h8: 0, exc: 0 },
+  maps:   { h6: new Map(), h8: new Map(), exc: new Map() },
+  counts: { h6: 0, h8: 0, exc: 0 },
   loaded: false,
 }
 
@@ -108,7 +108,7 @@ export const useAppStore = create<AppState>((set, get) => ({
             items:         { ...s.items,         [id]: { ...s.items[id], status: 'exc' } },
             processedData: {
               ...s.processedData,
-              [id]: { data, headerIndex: 0, changes: 0, excelBlob: blob, originalName: file.name, overtimeRule: '7', processedAt: formatDate(new Date()) },
+              [id]: { data, headerIndex: 0, changes: 0, excelBlob: blob, originalName: file.name, overtimeRule: '6', processedAt: formatDate(new Date()) },
             },
           }))
         }).catch(() => {
@@ -122,8 +122,8 @@ export const useAppStore = create<AppState>((set, get) => ({
         continue
       }
 
-      // 7h / 8h 計算
-      const rule: OvertimeRule = type === '7' ? '7' : '8'
+      // 6h / 8h 計算
+      const rule: OvertimeRule = type === '6' ? '6' : '8'
       set(s => ({ items: { ...s.items, [id]: { ...s.items[id], status: 'processing' } } }))
       processWorkFile(file, rule, roundMode, timeFormat).then(result => {
         if ('message' in result) {

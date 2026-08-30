@@ -10,7 +10,7 @@ export function WorkDropZone() {
   const masterLoaded  = useAppStore(s => s.master.loaded)
   const addManual     = useAppStore(s => s.addWorkFilesManual)
   const inputAutoRef  = useRef<HTMLInputElement>(null)
-  const input7hRef    = useRef<HTMLInputElement>(null)
+  const input6hRef    = useRef<HTMLInputElement>(null)
   const input8hRef    = useRef<HTMLInputElement>(null)
 
   const handleAuto = useCallback((files: FileList | File[]) => {
@@ -55,7 +55,7 @@ export function WorkDropZone() {
       </p>
       <div className="grid grid-cols-2 gap-3">
         {([
-          { label: '7時間基準', rule: '7' as const, ref: input7hRef, color: 'blue' },
+          { label: '6時間基準', rule: '6' as const, ref: input6hRef, color: 'blue' },
           { label: '8時間基準', rule: '8' as const, ref: input8hRef, color: 'purple' },
         ] as const).map(({ label, rule, ref, color }) => (
           <div

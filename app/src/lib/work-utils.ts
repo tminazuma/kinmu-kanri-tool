@@ -7,7 +7,7 @@ export function normalize(str: string | null | undefined): string {
 
 export function isLikelyHeader(row: unknown[]): boolean {
   if (!row || row.length === 0) return false
-  const kws = ['7時間', '8時間', '名前', '氏名', '7h', '8h', 'name', '区分']
+  const kws = ['6時間', '7時間', '8時間', '名前', '氏名', '6h', '7h', '8h', 'name', '区分']
   return row.some(cell =>
     kws.some(kw => String(cell).toLowerCase().includes(kw.toLowerCase()))
   )

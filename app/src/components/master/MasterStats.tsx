@@ -12,8 +12,8 @@ export function MasterStats() {
   return (
     <div className="flex flex-col gap-1 px-2">
       <div className="flex items-center justify-between text-xs">
-        <Badge variant="outline" className="border-blue-300 text-blue-700 bg-blue-50">7時間</Badge>
-        <span className="text-muted-foreground">{counts.h7}名</span>
+        <Badge variant="outline" className="border-blue-300 text-blue-700 bg-blue-50">6時間</Badge>
+        <span className="text-muted-foreground">{counts.h6}名</span>
       </div>
       <div className="flex items-center justify-between text-xs">
         <Badge variant="outline" className="border-purple-300 text-purple-700 bg-purple-50">8時間</Badge>

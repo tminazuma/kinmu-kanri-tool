@@ -33,8 +33,8 @@ export function ResultsArea() {
       {/* 3カラムパネル */}
       <div className="grid grid-cols-3 gap-3 flex-1 overflow-hidden min-h-0">
         <ResultsPanel
-          type="7"
-          label="7時間勤務者"
+          type="6"
+          label="6時間勤務者"
           colorClass="border-blue-200"
           headerClass="bg-blue-600"
         />

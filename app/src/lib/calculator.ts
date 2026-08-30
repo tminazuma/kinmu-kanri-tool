@@ -10,7 +10,7 @@ import {
 
 export type { RoundMode }
 export type TimeFormat   = 'decimal' | 'time'
-export type OvertimeRule = '7' | '8'
+export type OvertimeRule = '6' | '8'
 
 export interface ProcessedData {
   data:         unknown[][]
@@ -102,24 +102,24 @@ export function calcSheetData(
     const isSpecial = overtimeRule === '8' && sv.includes('17:00') && ev.includes('33:00')
     const isFree    = sv === '' && ev === ''
     let   isShort   = false
-    if (overtimeRule === '7' && stIdx !== -1 && etIdx !== -1) {
+    if (overtimeRule === '6' && stIdx !== -1 && etIdx !== -1) {
       const sm = parseToMinutes(row[stIdx] as number | string)
       const em = parseToMinutes(row[etIdx] as number | string)
       if (sm !== null && em !== null) {
         let diff = em - sm
         if (diff < 0) diff += 1440
-        if (diff === 210) isShort = true
+        if (diff === 180) isShort = true
       }
     }
 
     let otMin = 0
     if (isSpecial && lvIdx !== -1 && isValidTime(row[lvIdx])) {
-      otMin = Math.max(0, rounded.minutes - (overtimeRule === '8' ? 900 : 420))
+      otMin = Math.max(0, rounded.minutes - (overtimeRule === '8' ? 900 : 360))
     } else if (isShort) {
-      otMin = Math.max(0, rounded.minutes - 210)
+      otMin = Math.max(0, rounded.minutes - 180)
     } else if (isFree) {
-      if (overtimeRule === '7') {
-        if (rounded.minutes > 420) {
+      if (overtimeRule === '6') {
+        if (rounded.minutes > 360) {
           const bv = timeFormat === 'decimal' ? 0.75 : '00:45'
           if (bIdx !== -1 && row[bIdx] !== bv) { row[bIdx] = bv; changes++ }
           totalWork -= 45; rounded.minutes -= 45
@@ -128,7 +128,7 @@ export function calcSheetData(
             : minutesToTimeString(rounded.minutes)
           if (row[wIdx] !== nw) { row[wIdx] = nw; changes++ }
         }
-        otMin = Math.max(0, rounded.minutes - 420)
+        otMin = Math.max(0, rounded.minutes - 360)
       } else {
         if (rounded.minutes > 480) {
           const bv = timeFormat === 'decimal' ? 1.0 : '01:00'
@@ -142,7 +142,7 @@ export function calcSheetData(
         otMin = Math.max(0, rounded.minutes - 480)
       }
     } else {
-      otMin = Math.max(0, rounded.minutes - (overtimeRule === '7' ? 420 : 480))
+      otMin = Math.max(0, rounded.minutes - (overtimeRule === '6' ? 360 : 480))
     }
 
     const fmtOT = timeFormat === 'decimal' ? minutesToDecimal(otMin) : minutesToTimeString(otMin)
